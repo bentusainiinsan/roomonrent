@@ -11,12 +11,17 @@
     <meta name="author" content="Sonipat Home Service">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <script type="importmap">
+    
+    <!-- Add Babel for in-browser JSX & TypeScript transpilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script type="importmap">
 {
   "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react": "https://esm.sh/react@18.3.1",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+    "@google/genai": "https://esm.sh/@google/genai",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.28.0",
     "react/": "https://aistudiocdn.com/react@^19.2.0/"
   }
 }
@@ -24,6 +29,12 @@
 </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+    <!-- 
+      Change the script type to "text/babel" and add data-presets.
+      This tells the Babel library (loaded above) to find this script,
+      transpile it from TSX to plain JavaScript, and then run it.
+      data-type="module" is important to make sure it respects the importmap.
+    -->
+    <script type="text/babel" data-presets="react,typescript" src="/index.tsx" data-type="module"></script>
   </body>
 </html>
