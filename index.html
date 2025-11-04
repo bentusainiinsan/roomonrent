@@ -26,7 +26,7 @@
     <div id="root"></div>
     <script type="text/babel" data-type="module">
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 // FIX: Removed LiveSession as it is not an exported member of @google/genai.
 import { GoogleGenAI, Modality, Blob as GenAIBlob, LiveServerMessage } from "@google/genai";
 
@@ -995,7 +995,8 @@ const App = () => {
 // RENDER THE APP
 // =================================================================================
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const container = document.getElementById('root');
+const root = createRoot(container);
 root.render(<App />);
     </script>
   </body>
