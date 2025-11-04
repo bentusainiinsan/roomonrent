@@ -25,7 +25,7 @@
   <body>
     <div id="root"></div>
     <script type="text/babel" data-type="module">
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 // FIX: Removed LiveSession as it is not an exported member of @google/genai.
 import { GoogleGenAI, Modality, Blob as GenAIBlob, LiveServerMessage } from "@google/genai";
@@ -308,7 +308,7 @@ const Footer = () => {
 };
 
 const PropertyCard = ({ property, onInquire, user }) => {
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
 
     const nextImage = (e) => {
         e.stopPropagation();
@@ -375,7 +375,7 @@ const PropertyCard = ({ property, onInquire, user }) => {
 };
 
 const PropertyList = ({ properties, onInquire, user }) => {
-    const [filters, setFilters] = useState({
+    const [filters, setFilters] = React.useState({
         location: 'All',
         subLocation: 'All',
         type: 'All',
@@ -383,9 +383,9 @@ const PropertyList = ({ properties, onInquire, user }) => {
         maxRent: '',
     });
     
-    const [subLocations, setSubLocations] = useState([]);
+    const [subLocations, setSubLocations] = React.useState([]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (filters.location === 'All') {
             setSubLocations([]);
         } else {
@@ -402,7 +402,7 @@ const PropertyList = ({ properties, onInquire, user }) => {
         });
     };
 
-    const filteredProperties = useMemo(() => {
+    const filteredProperties = React.useMemo(() => {
         return properties.filter(p => {
             const { location, subLocation, type, minRent, maxRent } = filters;
             return (
@@ -497,7 +497,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 };
 
 const PropertyFormModal = ({ isOpen, onClose, onAddProperty }) => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = React.useState({
         title: '',
         type: PropertyType.Room,
         location: Object.keys(sonipatLocations)[0],
@@ -507,8 +507,8 @@ const PropertyFormModal = ({ isOpen, onClose, onAddProperty }) => {
         ownerName: '',
         ownerPhone: '',
     });
-    const [images, setImages] = useState([]);
-    const [imagePreviews, setImagePreviews] = useState([]);
+    const [images, setImages] = React.useState([]);
+    const [imagePreviews, setImagePreviews] = React.useState([]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -608,7 +608,7 @@ const PropertyFormModal = ({ isOpen, onClose, onAddProperty }) => {
 };
 
 const InquiryModal = ({ isOpen, onClose, property }) => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = React.useState({
         name: '',
         phone: '',
         email: '',
@@ -706,9 +706,9 @@ const AIStudioModal = ({ isOpen, onClose, onKeySelected }) => {
 };
 
 const LiveAssistant = ({ onAsk }) => {
-    const [isListening, setIsListening] = useState(false);
-    const [status, setStatus] = useState("Click the mic to start");
-    const sessionPromiseRef = useRef(null);
+    const [isListening, setIsListening] = React.useState(false);
+    const [status, setStatus] = React.useState("Click the mic to start");
+    const sessionPromiseRef = React.useRef(null);
 
     const startConversation = async () => {
         setStatus("Connecting to AI...");
@@ -831,22 +831,22 @@ const LiveAssistant = ({ onAsk }) => {
 // =================================================================================
 
 const App = () => {
-    const [bgColor, setBgColor] = useState('bg-gray-50');
-    const [properties, setProperties] = useState(initialProperties);
-    const [user, setUser] = useState(null);
-    const [isPropertyFormOpen, setIsPropertyFormOpen] = useState(false);
-    const [isCartModalOpen, setIsCartModalOpen] = useState(false);
-    const [selectedPropertyForInquiry, setSelectedPropertyForInquiry] = useState(null);
-    const [isAIStudioModalOpen, setIsAIStudioModalOpen] = useState(false);
-    const [isAIStudioEnv, setIsAIStudioEnv] = useState(false);
-    const [hasApiKey, setHasApiKey] = useState(false);
-    const [aiResponse, setAiResponse] = useState("");
+    const [bgColor, setBgColor] = React.useState('bg-gray-50');
+    const [properties, setProperties] = React.useState(initialProperties);
+    const [user, setUser] = React.useState(null);
+    const [isPropertyFormOpen, setIsPropertyFormOpen] = React.useState(false);
+    const [isCartModalOpen, setIsCartModalOpen] = React.useState(false);
+    const [selectedPropertyForInquiry, setSelectedPropertyForInquiry] = React.useState(null);
+    const [isAIStudioModalOpen, setIsAIStudioModalOpen] = React.useState(false);
+    const [isAIStudioEnv, setIsAIStudioEnv] = React.useState(false);
+    const [hasApiKey, setHasApiKey] = React.useState(false);
+    const [aiResponse, setAiResponse] = React.useState("");
     
     const colors = [
         'bg-gray-50', 'bg-blue-50', 'bg-green-50', 'bg-yellow-50', 'bg-purple-50', 'bg-pink-50'
     ];
     
-    useEffect(() => {
+    React.useEffect(() => {
         const interval = setInterval(() => {
             const randomIndex = Math.floor(Math.random() * colors.length);
             setBgColor(colors[randomIndex]);
