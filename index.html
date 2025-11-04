@@ -15,10 +15,9 @@
   <script type="importmap">
 {
   "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.28.0"
+    "react": "https://esm.sh/react@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "@google/genai": "https://esm.sh/@google/genai"
   }
 }
 </script>
@@ -715,7 +714,7 @@ const LiveAssistant = ({ onAsk }) => {
         setStatus("Connecting to AI...");
         setIsListening(true);
         
-        // FIX: Safely access API key to prevent browser errors
+        // Safely access API key to prevent browser errors
         const apiKey = (typeof window.process !== 'undefined' && window.process.env) ? window.process.env.API_KEY : null;
         if (!apiKey) {
             setStatus("AI features are not available in this environment.");
@@ -854,7 +853,8 @@ const App = () => {
         }, 60000); // Change every minute
 
         const checkEnv = async () => {
-            // Check for the specific AI Studio environment safely
+            // Check for the specific AI Studio environment safely.
+            // In a standard browser (like on GitHub pages), 'window.aistudio' and 'window.process' will be undefined.
             if (typeof window.aistudio !== 'undefined' && typeof window.process !== 'undefined' && window.process.env) {
                 setIsAIStudioEnv(true);
                 const hasKey = await window.aistudio.hasSelectedApiKey();
@@ -863,7 +863,7 @@ const App = () => {
                     setIsAIStudioModalOpen(true);
                 }
             } else {
-                // Not in AI Studio, so disable AI features to prevent errors
+                // Not in AI Studio, so disable AI features to prevent errors.
                 setIsAIStudioEnv(false);
                 setHasApiKey(false);
                 console.log("AI features disabled. App is not running in the required AI Studio environment.");
@@ -912,7 +912,7 @@ const App = () => {
         
         setAiResponse("AI is thinking...");
         try {
-            // FIX: Safely access API key to prevent browser errors
+            // Safely access API key to prevent browser errors
             const apiKey = (typeof window.process !== 'undefined' && window.process.env) ? window.process.env.API_KEY : null;
             if (!apiKey) {
                 throw new Error("API Key not available in this environment.");
