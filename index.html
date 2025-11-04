@@ -714,7 +714,15 @@ const LiveAssistant = ({ onAsk }) => {
     const startConversation = async () => {
         setStatus("Connecting to AI...");
         setIsListening(true);
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        
+        // FIX: Safely access API key to prevent browser errors
+        const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : null;
+        if (!apiKey) {
+            setStatus("AI features are not available in this environment.");
+            setIsListening(false);
+            return;
+        }
+        const ai = new GoogleGenAI({ apiKey: apiKey });
 
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -904,7 +912,12 @@ const App = () => {
         
         setAiResponse("AI is thinking...");
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            // FIX: Safely access API key to prevent browser errors
+            const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : null;
+            if (!apiKey) {
+                throw new Error("API Key not available in this environment.");
+            }
+            const ai = new GoogleGenAI({ apiKey: apiKey });
             const propertyContext = properties.map(p => `${p.title} in ${p.subLocation} for rent ₹${p.rent}`).join('. ');
             const fullPrompt = `Based on the following available properties: ${propertyContext}. The user is asking: "${query}". Answer the user's question about the properties.`;
             
