@@ -716,7 +716,7 @@ const LiveAssistant = ({ onAsk }) => {
         setIsListening(true);
         
         // FIX: Safely access API key to prevent browser errors
-        const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : null;
+        const apiKey = (typeof window.process !== 'undefined' && window.process.env) ? window.process.env.API_KEY : null;
         if (!apiKey) {
             setStatus("AI features are not available in this environment.");
             setIsListening(false);
@@ -854,8 +854,8 @@ const App = () => {
         }, 60000); // Change every minute
 
         const checkEnv = async () => {
-            // Check for the specific AI Studio environment
-            if (typeof window.aistudio !== 'undefined' && typeof process !== 'undefined' && process.env) {
+            // Check for the specific AI Studio environment safely
+            if (typeof window.aistudio !== 'undefined' && typeof window.process !== 'undefined' && window.process.env) {
                 setIsAIStudioEnv(true);
                 const hasKey = await window.aistudio.hasSelectedApiKey();
                 setHasApiKey(hasKey);
@@ -913,7 +913,7 @@ const App = () => {
         setAiResponse("AI is thinking...");
         try {
             // FIX: Safely access API key to prevent browser errors
-            const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : null;
+            const apiKey = (typeof window.process !== 'undefined' && window.process.env) ? window.process.env.API_KEY : null;
             if (!apiKey) {
                 throw new Error("API Key not available in this environment.");
             }
